@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-10T01:14:45-05:00</updated><id>http://localhost:4000/</id><title type="html">Amir’s programming blog</title><subtitle>The goal of this blog is write a story behind each library or framework I write or even my experiments with other libraries. I found the GitHub repo README insufficient and kind of too formal and I hope this blog would fill the gap.</subtitle><entry><title type="html">DynamicTypeBuilder</title><link href="http://localhost:4000/programming-blog/2018/06/10/typebuilder.html" rel="alternate" type="text/html" title="DynamicTypeBuilder" /><published>2018-06-10T00:16:11-05:00</published><updated>2018-06-10T00:16:11-05:00</updated><id>http://localhost:4000/programming-blog/2018/06/10/typebuilder</id><content type="html" xml:base="http://localhost:4000/programming-blog/2018/06/10/typebuilder.html">&lt;p&gt;I really wanted to create a type on the fly by extending an existing type and then add some extra properties to
+it. Thanks to &lt;code class=&quot;highlighter-rouge&quot;&gt;System.Reflection.Emit&lt;/code&gt; written by Mono team it is possible to achieve this in dotnet core. This
+package comes with a &lt;code class=&quot;highlighter-rouge&quot;&gt;TypeBuilder&lt;/code&gt; class but using it is really not a straightforward thing to do. Hence I created
+this small library to do the job (&lt;a href=&quot;&amp;quot;https://github.com/amir734jj/CustomTypeBuilder&amp;quot;&quot;&gt;repo url with nuget package too&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Start the type building&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Builders&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CustomTypeBuilder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;New&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Useful while generating nested types, you can re-use `moduleBuilder`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;GetModuleBuilder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;out&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;moduleBuilder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;SetModuleBuilder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;moduleBuilder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Extend an existing type&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;FinalizeOptionsBuilder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DummyClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;()&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Add properties&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddProperty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddProperty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Age&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Class level attribute&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;AddAttribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;RequiredAttribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Or instantiate this type and cast to DummyClass, or use `Activator.CreateInstance`&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// .Instantiate&amp;lt;DummyClass&amp;gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;After type is created, we can use &lt;code class=&quot;highlighter-rouge&quot;&gt;Activator.CreateInstance(type)&lt;/code&gt; to instantiate an instance of type
+and also we can use reflection to set properties. In our example because we extended &lt;code class=&quot;highlighter-rouge&quot;&gt;DummyClass&lt;/code&gt;, we can
+up-cast the object to &lt;code class=&quot;highlighter-rouge&quot;&gt;DummyClass&lt;/code&gt; in order to access &lt;code class=&quot;highlighter-rouge&quot;&gt;DummyClass&lt;/code&gt; fields statically without using reflection.
+One thing I noticed is that types don’t really show up while debugging in Rider, but they show perfectly in
+Visual Studio.&lt;/p&gt;
+
+&lt;p&gt;As always, I appreciate any feedback or contribution.&lt;/p&gt;</content><author><name></name></author><summary type="html">I really wanted to create a type on the fly by extending an existing type and then add some extra properties to it. Thanks to System.Reflection.Emit written by Mono team it is possible to achieve this in dotnet core. This package comes with a TypeBuilder class but using it is really not a straightforward thing to do. Hence I created this small library to do the job (repo url with nuget package too).</summary></entry><entry><title type="html">LocalDate</title><link href="http://localhost:4000/programming-blog/2018/06/10/localdate.html" rel="alternate" type="text/html" title="LocalDate" /><published>2018-06-10T00:16:11-05:00</published><updated>2018-06-10T00:16:11-05:00</updated><id>http://localhost:4000/programming-blog/2018/06/10/localdate</id><content type="html" xml:base="http://localhost:4000/programming-blog/2018/06/10/localdate.html">&lt;p&gt;After learning the hard truth that C# does not come with a date only type and &lt;code class=&quot;highlighter-rouge&quot;&gt;DateTime&lt;/code&gt; contains both
+the date and time, I started the journey to find the best library that fills the gap. I experimented with
+NodaTime library’s &lt;code class=&quot;highlighter-rouge&quot;&gt;LocalDate&lt;/code&gt; class but I found it difficult to use for very basic stuff like &lt;code class=&quot;highlighter-rouge&quot;&gt;ToString&lt;/code&gt;
+formatting and parsing given string and an optional pattern. Hence I decided to write my own
+(&lt;a href=&quot;https://github.com/amir734jj/LocalDate&quot;&gt;repo url with nuget package too&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;Of course to represent a date, we only need three integers (&lt;code class=&quot;highlighter-rouge&quot;&gt;year&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;month&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;day&lt;/code&gt;), but I wanted more
+than that. Hence I created a class called &lt;code class=&quot;highlighter-rouge&quot;&gt;LocalDate&lt;/code&gt; that extends &lt;code class=&quot;highlighter-rouge&quot;&gt;LocalDateStruct&lt;/code&gt; (it’s not actually a struct
+because structs in C# are actually sealed classed!). I added Julian day number hence code can handle:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;AddDays(int days)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;AddMonth(int months)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;AddYear(int year)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SubtractDays(int days)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SubtractMonth(int months)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SubtractYear(int year)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ToString(string formatter)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ParseLocalDate(string str)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The repo README contain a lot more examples. But the last thing I really to mention was the JSON.NET and Mongo
+driver bson custom serializer and bson serializers. I used &lt;code class=&quot;highlighter-rouge&quot;&gt;ToString&lt;/code&gt; to serialize and &lt;code class=&quot;highlighter-rouge&quot;&gt;ParseLocalDate&lt;/code&gt; for 
+deserialize. The reason I treated this &lt;code class=&quot;highlighter-rouge&quot;&gt;LocalDate&lt;/code&gt; as a value type rather than POCO or model. I wanted this
+library to be more similar to C# &lt;code class=&quot;highlighter-rouge&quot;&gt;DateTime&lt;/code&gt; which is in fact a &lt;code class=&quot;highlighter-rouge&quot;&gt;struct&lt;/code&gt; rather than a “library”.&lt;/p&gt;
+
+&lt;p&gt;As always, I appreciate any feedback or contribution.&lt;/p&gt;</content><author><name></name></author><summary type="html">After learning the hard truth that C# does not come with a date only type and DateTime contains both the date and time, I started the journey to find the best library that fills the gap. I experimented with NodaTime library’s LocalDate class but I found it difficult to use for very basic stuff like ToString formatting and parsing given string and an optional pattern. Hence I decided to write my own (repo url with nuget package too).</summary></entry></feed>
