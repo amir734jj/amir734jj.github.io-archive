@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "DynamicMap"
-description: "Add"
+title: "Dynamic-map C# library"
+description: "Dynamic type mapper (experiment)"
 date: 2018-06-05 23:16:11 -0600
 categories: programming-blog
 ---

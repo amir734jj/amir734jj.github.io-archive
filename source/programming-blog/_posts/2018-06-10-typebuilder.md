@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "DynamicTypeBuilder"
-description: "Add"
+title: "Dynamic-type-builder C# library"
+description: "Create types in run-time"
 date: 2018-06-09 23:16:11 -0600
 categories: programming-blog
 ---

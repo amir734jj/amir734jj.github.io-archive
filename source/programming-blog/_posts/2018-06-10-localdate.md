@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "LocalDate"
-description: "Add"
+title:  "Local-date C# library"
+description: "C# DateTime alternatives"
 date:   2018-06-09 23:16:11 -0600
 categories: programming-blog
 ---
