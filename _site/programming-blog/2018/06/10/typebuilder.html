@@ -3,24 +3,22 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>Dynamic-type-builder C# library | Amir’s programming blog</title>
+<title>DynamicTypeBuilder | Amir’s programming blog</title>
 <meta name="generator" content="Jekyll v3.8.3" />
-<meta property="og:title" content="Dynamic-type-builder C# library" />
+<meta property="og:title" content="DynamicTypeBuilder" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Create types in run-time" />
-<meta property="og:description" content="Create types in run-time" />
-<link rel="canonical" href="/programming-blog/2018/06/10/typebuilder.html" />
-<meta property="og:url" content="/programming-blog/2018/06/10/typebuilder.html" />
+<meta name="description" content="Add" />
+<meta property="og:description" content="Add" />
+<link rel="canonical" href="http://localhost:4000/programming-blog/2018/06/10/typebuilder.html" />
+<meta property="og:url" content="http://localhost:4000/programming-blog/2018/06/10/typebuilder.html" />
 <meta property="og:site_name" content="Amir’s programming blog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-06-10T00:16:11-05:00" />
 <script type="application/ld+json">
-{"description":"Create types in run-time","@type":"BlogPosting","url":"/programming-blog/2018/06/10/typebuilder.html","headline":"Dynamic-type-builder C# library","dateModified":"2018-06-10T00:16:11-05:00","datePublished":"2018-06-10T00:16:11-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"/programming-blog/2018/06/10/typebuilder.html"},"@context":"http://schema.org"}</script>
+{"description":"Add","@type":"BlogPosting","url":"http://localhost:4000/programming-blog/2018/06/10/typebuilder.html","headline":"DynamicTypeBuilder","dateModified":"2018-06-10T00:16:11-05:00","datePublished":"2018-06-10T00:16:11-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/programming-blog/2018/06/10/typebuilder.html"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Amir's programming blog" /></head>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-  <body><header class="site-header" role="banner">
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Amir's programming blog" /></head>
+<body><header class="site-header" role="banner">
 
   <div class="wrapper"><a class="site-title" rel="author" href="/">Amir&#39;s programming blog</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
@@ -40,7 +38,7 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Dynamic-type-builder C# library</h1>
+    <h1 class="post-title p-name" itemprop="name headline">DynamicTypeBuilder</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2018-06-10T00:16:11-05:00" itemprop="datePublished">Jun 10, 2018
       </time></p>
@@ -54,26 +52,20 @@ this small library to do the job (<a href="&quot;https://github.com/amir734jj/Cu
 
 <p>Example:</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Start the type building
-</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="c1">// Start the type building</span>
 <span class="kt">var</span> <span class="n">type</span> <span class="p">=</span> <span class="n">Builders</span><span class="p">.</span><span class="n">CustomTypeBuilder</span><span class="p">.</span><span class="nf">New</span><span class="p">()</span>
-    <span class="c1">// Useful while generating nested types, you can re-use `moduleBuilder`
-</span>
+    <span class="c1">// Useful while generating nested types, you can re-use `moduleBuilder`</span>
     <span class="p">.</span><span class="nf">GetModuleBuilder</span><span class="p">(</span><span class="k">out</span> <span class="kt">var</span> <span class="n">moduleBuilder</span><span class="p">)</span>
     <span class="p">.</span><span class="nf">SetModuleBuilder</span><span class="p">(</span><span class="n">moduleBuilder</span><span class="p">)</span>
-    <span class="c1">// Extend an existing type
-</span>
+    <span class="c1">// Extend an existing type</span>
     <span class="p">.</span><span class="nf">FinalizeOptionsBuilder</span><span class="p">().</span><span class="n">Extend</span><span class="p">&lt;</span><span class="n">DummyClass</span><span class="p">&gt;()</span>
-    <span class="c1">// Add properties
-</span>
+    <span class="c1">// Add properties</span>
     <span class="p">.</span><span class="n">AddProperty</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;(</span><span class="s">"Name"</span><span class="p">)</span>
     <span class="p">.</span><span class="n">AddProperty</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;(</span><span class="s">"Age"</span><span class="p">)</span>
-    <span class="c1">// Class level attribute
-</span>
+    <span class="c1">// Class level attribute</span>
     <span class="p">.</span><span class="nf">AddAttribute</span><span class="p">(</span><span class="k">new</span> <span class="nf">RequiredAttribute</span><span class="p">())</span>
     <span class="p">.</span><span class="nf">Compile</span><span class="p">();</span>
-    <span class="c1">// Or instantiate this type and cast to DummyClass, or use `Activator.CreateInstance`
-</span>
+    <span class="c1">// Or instantiate this type and cast to DummyClass, or use `Activator.CreateInstance`</span>
     <span class="c1">// .Instantiate&lt;DummyClass&gt;()</span></code></pre></figure>
 
 <p>After type is created, we can use <code class="highlighter-rouge">Activator.CreateInstance(type)</code> to instantiate an instance of type
